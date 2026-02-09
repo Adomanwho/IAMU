@@ -1,7 +1,9 @@
 package com.example.pokemon.api
 
+import android.content.ContentValues
 import android.content.Context
 import android.util.Log
+import com.example.pokemon.POKEMON_PROVIDER_CONTENT_URI
 import com.example.pokemon.PokemonReceiver
 
 import com.example.pokemon.framework.sendBroadcast
@@ -50,6 +52,7 @@ class PokemonFetcher (private val context: Context){
                             try {
                                 val imagePath = downloadImage(pokemon.sprites.front_default, pokemon.id)
                                 val item = convertToItem(pokemon, imagePath)
+                                saveToDatabase(item)
                                 synchronized(pokemonList) {
                                     pokemonList.add(item)
                                 }
@@ -126,8 +129,35 @@ class PokemonFetcher (private val context: Context){
             specialAttackStat = statsMap["special-attack"] ?: 0,
             specialDefenseStat = statsMap["special-defense"] ?: 0,
             speedStat = statsMap["speed"] ?: 0,
-            spriteImagePath = imagePath
+            spriteImagePath = imagePath,
+            read = false
         )
+    }
+
+    private fun saveToDatabase(item: Item) {
+        val values = ContentValues().apply {
+            put(Item::name.name, item.name)
+            put(Item::pokedexNumber.name, item.pokedexNumber)
+            put(Item::height.name, item.height)
+            put(Item::weight.name, item.weight)
+            put(Item::type1.name, item.type1)
+            put(Item::type2.name, item.type2)
+            put(Item::hpStat.name, item.hpStat)
+            put(Item::attackStat.name, item.attackStat)
+            put(Item::defenseStat.name, item.defenseStat)
+            put(Item::specialAttackStat.name, item.specialAttackStat)
+            put(Item::specialDefenseStat.name, item.specialDefenseStat)
+            put(Item::speedStat.name, item.speedStat)
+            put(Item::spriteImagePath.name, item.spriteImagePath)
+            put(Item::read.name, false)
+        }
+
+        context.contentResolver.insert(
+            POKEMON_PROVIDER_CONTENT_URI,
+            values
+        )
+
+        Log.d("PokemonFetcher", "Saved ${item.name} to database")
     }
 
     private fun onAllDataFetched() {

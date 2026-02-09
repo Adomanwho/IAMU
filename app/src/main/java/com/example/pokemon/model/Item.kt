@@ -6,6 +6,7 @@ import com.example.pokemon.api.Types
 import com.google.gson.annotations.SerializedName
 
 data class Item(
+    val _id: Long? = null,
     val name: String,
     val pokedexNumber: Int,
     val height: Int,
@@ -18,5 +19,6 @@ data class Item(
     val specialAttackStat: Int,
     val specialDefenseStat: Int,
     val speedStat: Int,
-    val spriteImagePath: String
+    val spriteImagePath: String,
+    val read: Boolean
 )
