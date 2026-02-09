@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -34,7 +35,6 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         startAnimations()
         redirect()
     }
@@ -80,6 +80,7 @@ class SplashScreenActivity : AppCompatActivity() {
             callDelayed(DELAY) {startActivity<HostActivity>()}
         } else{
             if(isOnline()){
+                Log.d("WE ARE ONLINE", "ONLINE")
                 WorkManager.getInstance(this).apply {
                     enqueueUniqueWork(
                         DATA_IMPORTED,
