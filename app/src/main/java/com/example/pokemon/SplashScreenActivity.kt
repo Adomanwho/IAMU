@@ -11,12 +11,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import com.example.pokemon.api.PokemonWorker
 import com.example.pokemon.databinding.ActivitySplashScreenBinding
 import com.example.pokemon.framework.applyAnimation
+import com.example.pokemon.framework.callDelayed
+import com.example.pokemon.framework.getBooleanProperty
+import com.example.pokemon.framework.isOnline
+import com.example.pokemon.framework.startActivity
 
 private const val DELAY = 3000L
 private const val CIRCLE_ANIMATION_DURATION = 1000L
 private const val CIRCLE_STAGGER_DELAY = 400L
+
+const val DATA_IMPORTED = "com.example.pokemon.data_imported"
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
 
@@ -66,9 +76,49 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun redirect() {
-        Handler(Looper.getMainLooper()).postDelayed(
-            {startActivity(Intent(this, HostActivity::class.java))},
-            DELAY
-        )
+        if(getBooleanProperty(DATA_IMPORTED)){
+            callDelayed(DELAY) {startActivity<HostActivity>()}
+        } else{
+            if(isOnline()){
+                WorkManager.getInstance(this).apply {
+                    enqueueUniqueWork(
+                        DATA_IMPORTED,
+                        ExistingWorkPolicy.KEEP,
+                        OneTimeWorkRequest.from(PokemonWorker::class.java)
+                    )
+                }
+            } else{
+                binding.tvSplash.text = getString(R.string.no_internet)
+                callDelayed(DELAY) {finish()}
+            }
+        }
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
