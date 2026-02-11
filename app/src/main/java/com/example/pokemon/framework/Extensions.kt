@@ -1,5 +1,6 @@
 package com.example.pokemon.framework
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,6 +14,8 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.content.edit
 import androidx.core.content.getSystemService
+import com.example.pokemon.POKEMON_PROVIDER_CONTENT_URI
+import com.example.pokemon.model.Item
 
 fun View.applyAnimation(animationId: Int)
     = startAnimation(AnimationUtils.loadAnimation(context, animationId))
@@ -54,9 +57,28 @@ fun Context.isOnline() : Boolean {
     return false
 }
 
+/*
+*
+*
+*
+* fun Context.fetchItems() : MutableList<Item>{
+    val items = mutableListOf<Item>()
 
+    contentResolver.query(
+        POKEMON_PROVIDER_CONTENT_URI,
+        null,
+        null,
+        null,
+        null,
+    ).use { rs ->
+        while(rs?.moveToNext() == true){
+            items.add(Item(
+                rs.getLong(rs.getColumnIndex(Item::_id.name)),
 
-
+            ))
+        }
+    }
+}*/
 
 
 

@@ -2,4 +2,14 @@
     <string name="app_name">Pokemon</string>
     <string name="please_wait">Please wait</string>
     <string name="no_internet">No internet :(</string>
+    <string name="pokemon_header">Pokemon header</string>
+    <string name="application_made_by_andrej_kolega">This application was made by Andrej Kolega</string>
+    <string name="hello_blank_fragment">Hello!</string>
+    <string name="exit">Exit?</string>
+    <string name="items">Items</string>
+    <string name="about">About</string>
+    <string name="do_you_really_want_to_exit_an_app">Do you really want to exit the application?</string>
+    <string name="cancel">Cancel</string>
+    <string name="pokemon_of_the_day">Pokemon of the day</string>
+    <string name="image_of_all_pokemon">Image of all pokemon</string>
 </resources>

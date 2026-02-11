@@ -26,7 +26,8 @@ private val CREATE_TABLE = "create table $TABLE_NAME(" +
         "${Item::specialAttackStat.name} integer not null, " +
         "${Item::specialDefenseStat.name} integer not null, " +
         "${Item::speedStat.name} integer not null, " +
-        "${Item::spriteImagePath.name} text not null" +
+        "${Item::spriteImagePath.name} text not null, " +
+        "${Item::read.name} text not null" +
         ")"
 
 private const val DROP_TABLE = "drop table if exists $TABLE_NAME"
