@@ -57,11 +57,8 @@ fun Context.isOnline() : Boolean {
     return false
 }
 
-/*
-*
-*
-*
-* fun Context.fetchItems() : MutableList<Item>{
+@SuppressLint("Range")
+fun Context.fetchItems() : MutableList<Item>{
     val items = mutableListOf<Item>()
 
     contentResolver.query(
@@ -74,14 +71,22 @@ fun Context.isOnline() : Boolean {
         while(rs?.moveToNext() == true){
             items.add(Item(
                 rs.getLong(rs.getColumnIndex(Item::_id.name)),
-
+                rs.getString(rs.getColumnIndex(Item::name.name)),
+                rs.getInt(rs.getColumnIndex(Item::pokedexNumber.name)),
+                rs.getInt(rs.getColumnIndex(Item::height.name)),
+                rs.getInt(rs.getColumnIndex(Item::weight.name)),
+                rs.getString(rs.getColumnIndex(Item::type1.name)),
+                rs.getString(rs.getColumnIndex(Item::type2.name)),
+                rs.getInt(rs.getColumnIndex(Item::hpStat.name)),
+                rs.getInt(rs.getColumnIndex(Item::attackStat.name)),
+                rs.getInt(rs.getColumnIndex(Item::defenseStat.name)),
+                rs.getInt(rs.getColumnIndex(Item::specialAttackStat.name)),
+                rs.getInt(rs.getColumnIndex(Item::specialDefenseStat.name)),
+                rs.getInt(rs.getColumnIndex(Item::speedStat.name)),
+                rs.getString(rs.getColumnIndex(Item::spriteImagePath.name)),
+                rs.getInt(rs.getColumnIndex(Item::read.name)) == 0
             ))
         }
     }
-}*/
-
-
-
-
-
-
+    return items
+}
