@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokemon.ITEM_POS
+import com.example.pokemon.ItemPagerActivity
 import com.example.pokemon.POKEMON_PROVIDER_CONTENT_URI
 import com.example.pokemon.R
+import com.example.pokemon.framework.startActivity
 import com.example.pokemon.model.Item
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
@@ -39,7 +42,9 @@ class ItemAdapter (
         holder.bind(item)
 
         holder.itemView.setOnClickListener {
-            //TODO
+            context.startActivity<ItemPagerActivity>(
+                ITEM_POS,
+                position)
         }
 
         holder.itemView.setOnLongClickListener {
@@ -51,18 +56,13 @@ class ItemAdapter (
 
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteItem(position: Int) {
-        Log.d("DELETE LOG", "In deleteItem method")
         val item = items[position]
-        Log.d("DELETE LOG", "Trying DB delete")
         context.contentResolver.delete(
             ContentUris.withAppendedId(POKEMON_PROVIDER_CONTENT_URI, item._id!!),
             null,
             null
         )
-        Log.d("DELETE LOG", "Deleted from db")
-        Log.d("DELETE LOG", "Trying to delete from file system")
         File(item.spriteImagePath)
-        Log.d("DELETE LOG", "Removed from file system")
         items.removeAt(position)
         notifyDataSetChanged()
     }

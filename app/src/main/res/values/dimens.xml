@@ -10,4 +10,7 @@
     <dimen name="_240dp">240dp</dimen>
     <dimen name="_10dp">10dp</dimen>
     <dimen name="_12dp">12dp</dimen>
+    <dimen name="_300dp">300dp</dimen>
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="_200dp">200dp</dimen>
 </resources>
