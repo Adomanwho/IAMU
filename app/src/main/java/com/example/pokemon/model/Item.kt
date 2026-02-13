@@ -20,5 +20,5 @@ data class Item(
     val specialDefenseStat: Int,
     val speedStat: Int,
     val spriteImagePath: String,
-    val read: Boolean
+    var read: Boolean = false
 )

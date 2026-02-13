@@ -72,7 +72,7 @@ class PokemonProvider : ContentProvider() {
             ITEMS -> return repository.update(values, selection, selectionArgs)
             ITEM_ID -> {
                 val id = uri.lastPathSegment
-                if(id != null) return repository.update(values,"${Item::_id.name}?", arrayOf(id))
+                if(id != null) return repository.update(values,"${Item::_id.name} = ?", arrayOf(id))
             }
         }
         throw IllegalArgumentException("WRONG URI")

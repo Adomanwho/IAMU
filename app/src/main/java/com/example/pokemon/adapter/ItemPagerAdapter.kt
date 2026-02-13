@@ -2,6 +2,7 @@ package com.example.pokemon.adapter
 
 import android.annotation.SuppressLint
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -41,26 +42,31 @@ class ItemPagerAdapter (
     ) {
         val item = items[position]
         holder.bind(item)
+        holder.ivNameIcon.setOnClickListener {
+            updateItem(position)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun deleteItem(position: Int) {
+    private fun updateItem(position: Int) {
         val item = items[position]
-        context.contentResolver.delete(
+        item.read = !item.read
+        context.contentResolver.update(
             ContentUris.withAppendedId(POKEMON_PROVIDER_CONTENT_URI, item._id!!),
+            ContentValues().apply {
+                put(Item::read.name, item.read)
+            },
             null,
             null
         )
-        File(item.spriteImagePath)
-        items.removeAt(position)
-        notifyDataSetChanged()
+        notifyItemChanged(position)
     }
 
     override fun getItemCount(): Int = items.count()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
-        private val ivNameIcon = itemView.findViewById<ImageView>(R.id.ivRead)
+        val ivNameIcon = itemView.findViewById<ImageView>(R.id.ivRead)
         private val tvName = itemView.findViewById<TextView>(R.id.tvName)
         private val tvPokedexNumber = itemView.findViewById<TextView>(R.id.tvPokedexNumber)
         private val tvHeight = itemView.findViewById<TextView>(R.id.tvHeight)
@@ -90,6 +96,8 @@ class ItemPagerAdapter (
                 .load(File(item.spriteImagePath))
                 .error(R.drawable.pokeball_icon)
                 .into(ivItem)
+
+            ivNameIcon.setImageResource(if(item.read) R.drawable.red_flag else R.drawable.green_flag)
 
             // Basic info
             tvName.text = item.name.uppercase()
