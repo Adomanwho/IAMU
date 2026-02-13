@@ -1,12 +1,16 @@
 package com.example.pokemon.adapter
 
+import android.annotation.SuppressLint
+import android.content.ContentUris
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokemon.POKEMON_PROVIDER_CONTENT_URI
 import com.example.pokemon.R
 import com.example.pokemon.model.Item
 import com.squareup.picasso.Picasso
@@ -33,6 +37,34 @@ class ItemAdapter (
     ) {
         val item = items[position]
         holder.bind(item)
+
+        holder.itemView.setOnClickListener {
+            //TODO
+        }
+
+        holder.itemView.setOnLongClickListener {
+            Log.d("DELETE LOG", "Entering delete")
+            deleteItem(position)
+            true
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun deleteItem(position: Int) {
+        Log.d("DELETE LOG", "In deleteItem method")
+        val item = items[position]
+        Log.d("DELETE LOG", "Trying DB delete")
+        context.contentResolver.delete(
+            ContentUris.withAppendedId(POKEMON_PROVIDER_CONTENT_URI, item._id!!),
+            null,
+            null
+        )
+        Log.d("DELETE LOG", "Deleted from db")
+        Log.d("DELETE LOG", "Trying to delete from file system")
+        File(item.spriteImagePath)
+        Log.d("DELETE LOG", "Removed from file system")
+        items.removeAt(position)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = items.count()

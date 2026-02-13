@@ -9,7 +9,7 @@ import com.example.pokemon.framework.startActivity
 class PokemonReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        //context.setBooleanProperty(DATA_IMPORTED)
+        context.setBooleanProperty(DATA_IMPORTED)
         context.startActivity<HostActivity>()
     }
 }
